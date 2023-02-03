@@ -6,7 +6,7 @@ En el presente archivo se encuentran las instrucciones para descargar
 de forma local el proyecto e instalarlo en el equipo local.
 
 1. Descargar el proyecto que se encuentra alojado en github
-    - git clone <colocar ruta>
+    - git clone https://github.com/pcaceres06/ml_fraude_neural.git
 
 2. Se recomienda crear un entorno virtual de python para la instalacion
 de las librerias, ya que esto evita tener conflictos de librerias
