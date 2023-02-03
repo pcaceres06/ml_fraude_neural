@@ -1,0 +1,68 @@
+#===========================================================
+# Instrucciones para ejecutar el programa
+#===========================================================
+
+En el presente archivo se encuentran las instrucciones para descargar
+de forma local el proyecto e instalarlo en el equipo local.
+
+1. Descargar el proyecto que se encuentra alojado en github
+    - git clone <colocar ruta>
+
+2. Se recomienda crear un entorno virtual de python para la instalacion
+de las librerias, ya que esto evita tener conflictos de librerias
+en el entorno global. 
+
+Este paso es opcional
+
+Para crear el ambiente virtual, ubicarse dentro del proyecto y ejecutar
+el comando: python -m venv <nombre_del_ambiente> (se recomienda el 
+nombre env)
+
+3. Activar el ambiente virtual
+ - En windows (en consola bash):
+    source <nombre_del_ambiente>/Scripts/activate
+
+- En Mac
+    source <nombre_del_ambiente>/bin/activate
+
+- En Linux
+    source <nombre_del_ambiente>/bin/activate
+
+4. Instalar librerias
+Las librerias utilizadas en este proyecto se encuentran registrada en el
+archivo requirements.txt
+
+Para instalar las librerias con el archivo, ejecutare el siguiente comando:
+pip install -r requirements.txt
+
+5. El entrypoint del api es el archivo index.py
+Para levantar el servidor ejecutar el siguiente comando:
+python index.py
+
+6. Una vez se ha levantado el servicio, se puede enviar peticiones. La estructura
+del request debe ser en formato json como el siguiente ejemplo:
+
+{
+    "ID_USER": 0,
+	"genero": "M",
+	"monto": "9000000",
+	"fecha": "21\\/01\\/2020",
+	"hora": 20,
+	"dispositivo": "{'model': 2020; 'device_score': 3; 'os': 'ANDROID'}",
+	"establecimiento": "Super",
+	"ciudad": "Merida",
+	"tipo_tc": "F\\u00c3\\u00adsica",
+	"linea_tc": 71000,
+	"interes_tc": 51,
+	"status_txn": "Aceptada",
+	"is_prime": "False",
+	"dcto": "100",
+	"cashback": "45"
+}
+
+Para realizar peticioens se puede utilizar el software postman con el
+siguiente endpoint:
+
+http://127.0.0.1:3000/fraud_predict
+
+El método debe ser POST

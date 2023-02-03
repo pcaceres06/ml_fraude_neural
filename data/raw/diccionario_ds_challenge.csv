@@ -1,0 +1,17 @@
+﻿Feature,Descripción
+ID_USER,ID de usuario que realizó la compra
+genero,"Género de usuario (Femenino (F), Masculino (M))"
+monto,Monto facturado en la transacción
+fecha,Fecha de la transacción
+hora,Hora de la transacción
+dispositivo,Información del dispositivo desde el cual se hizo la transacción {'model': Año del dispositivo; 'device_score': Score del dispositivo (5 máximo); 'os': Tipo de sistema operativo}
+establecimiento,Tipo de establecimiento
+ciudad,Ciudad de la compra
+tipo_tc,Tipo de tarjeta (física o virtual)
+linea_tc,Monto de línea (cupo) de la tarjeta
+interes_tc,Intereses efectivo anual
+status_txn,Estado de la transacción
+is_prime,"Identificador si es usuario prime (paga servicio adicional) o no (1: usuario prime, 0: usuario no prime)"
+dcto,Descuento aplicado a la transacción
+cashback,Monto devuelto por realizar la transacción al saldo de tarjeta
+fraude,Identificador si la transacción es fraude o no

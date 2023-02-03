@@ -1,0 +1,35 @@
+.
+├── analisis
+│   ├── EDA
+│   └── model
+├── api
+│   ├── __init__.py
+│   └── credit_card_fraud.py
+├── data
+│   ├── processed
+│   └── raw
+├── docs
+│   └── Data Scientist Challenge_Finesa.pdf
+├── env (ambiente virtual)
+│   ├── Include
+│   ├── Lib
+│   ├── Scripts
+│   ├── etc
+│   ├── pyvenv.cfg
+│   └── share
+├── modelo
+│   ├── fraud_model.pkl
+│   ├── model_columns.csv
+│   ├── model_params.csv
+│   └── predictors_params.csv
+├── .gitignore
+├── app.py
+├── index.py
+├── intrucciones.txt
+├── requirements.txt
+├── routes.py
+└── utils
+    ├── __init__.py
+    ├── __pycache__
+    ├── grahps.py
+    └── serialized_model.py
