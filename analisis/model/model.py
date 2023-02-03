@@ -41,8 +41,11 @@ from sklearn.discriminant_analysis import LinearClassifierMixin, LinearDiscrimin
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import VotingClassifier
+import xgboost as xgb
 
 #Optimización Hiperparametros
 from bayes_opt import BayesianOptimization
@@ -58,7 +61,9 @@ pd.options.display.max_columns = None
 pd.options.display.max_rows = 200
 pd.options.display.float_format = '{:.2f}'.format
 
-FILE_PATH = f'{os.getcwd()}/data/processed'
+#FILE_PATH = f'{os.getcwd()}/data/processed'
+
+FILE_PATH = '../../data/processed'
 
 # Cargar datos
 df = pd.read_csv(f'{FILE_PATH}/transactions.csv', sep=',')
@@ -150,6 +155,8 @@ def train_and_evaluate(scaler_choice,
                         model_batch_size,
                         model_max_iter,
                         model_solver,
+                        tree_depth,
+                        fr_n_estimators,
                         verbose=False,
                         show_live_plot=True
                         ) -> float:
@@ -323,107 +330,64 @@ def train_and_evaluate(scaler_choice,
             voting='soft'
         )
     elif model_selection == 7:
-        lr = LogisticRegression(
-            penalty="l1" if model_penalty > 0.5 else "l2",
-            solver='liblinear',
-            C=model_C,
-            class_weight={0: 1, 1: model_pos_class_weight}
-        )
-
-        if model_penalty < 0.33:
-            kernel = 'linear'
-        elif model_penalty < 0.67:
-            kernel = 'rbf'
-        else:
-            kernel = 'sigmoid'
-
-        svm = SVC(
-            probability=True,
-            kernel=kernel,
-            gamma=model_C,
-            C=model_C,
-            class_weight={0: 1, 1: model_pos_class_weight}
-        )
-
-        model = VotingClassifier(
-            estimators=[('lr', lr), ('svm', svm)],
-            voting='soft'
-        )
+        tree_depth = int(round(tree_depth, 0))
+        model = DecisionTreeClassifier(random_state=0, max_depth=tree_depth)
 
     elif model_selection == 8:
-        lr = LogisticRegression(
-            penalty="l1" if model_penalty > 0.5 else "l2",
-            solver='liblinear',
-            C=model_C,
-            class_weight={0: 1, 1: model_pos_class_weight}
-        )
-        lda = LinearDiscriminantAnalysis()
-        qda = QuadraticDiscriminantAnalysis()
-
-        if model_penalty < 0.33:
-            kernel = 'linear'
-        elif model_penalty < 0.67:
-            kernel = 'rbf'
-        else:
-            kernel = 'sigmoid'
-
-        svm = SVC(
-            probability=True,
-            kernel=kernel,
-            gamma=model_C,
-            C=model_C,
-            class_weight={0: 1, 1: model_pos_class_weight}
-        )
-
-        model = VotingClassifier(
-            estimators=[('lr', lr), ('lda', lda), ('qda', qda), ('svm', svm)],
-            voting='soft'
-        )
+        fr_n_estimators = int(round(fr_n_estimators, 0))
+        model = RandomForestClassifier(n_estimators=fr_n_estimators)
 
     elif model_selection == 9:
-        lr = LogisticRegression(
-            penalty="l1" if model_penalty > 0.5 else "l2",
-            solver='liblinear',
-            C=model_C,
-            class_weight={0: 1, 1: model_pos_class_weight}
-        )
-        lda = LinearDiscriminantAnalysis()
-        qda = QuadraticDiscriminantAnalysis()
+        # lr = LogisticRegression(
+        #     penalty="l1" if model_penalty > 0.5 else "l2",
+        #     solver='liblinear',
+        #     C=model_C,
+        #     class_weight={0: 1, 1: model_pos_class_weight}
+        # )
+        # lda = LinearDiscriminantAnalysis()
+        # qda = QuadraticDiscriminantAnalysis()
 
-        if model_penalty < 0.33:
-            kernel = 'linear'
-        elif model_penalty < 0.67:
-            kernel = 'rbf'
-        else:
-            kernel = 'sigmoid'
+        # if model_penalty < 0.33:
+        #     kernel = 'linear'
+        # elif model_penalty < 0.67:
+        #     kernel = 'rbf'
+        # else:
+        #     kernel = 'sigmoid'
 
-        svm = SVC(
-            probability=True,
-            kernel=kernel,
-            gamma=model_C,
-            C=model_C,
-            class_weight={0: 1, 1: model_pos_class_weight}
-        )
+        # svm = SVC(
+        #     probability=True,
+        #     kernel=kernel,
+        #     gamma=model_C,
+        #     C=model_C,
+        #     class_weight={0: 1, 1: model_pos_class_weight}
+        # )
 
-        max_exponent = int(model_hidden_layer_size_exp)
+        # max_exponent = int(model_hidden_layer_size_exp)
         
-        model_kwargs = dict(
-            hidden_layer_sizes = [2**(n) for n in reversed(range(3, max_exponent))],
-            solver="adam" if model_solver > 0.5 else "sgd",
-            batch_size=2**int(model_batch_size),
-            learning_rate_init=model_lr_init,
-            alpha=model_alpha,
-            max_iter=int(model_max_iter),
-            early_stopping=True,
-            random_state=42,
-        )
+        # model_kwargs = dict(
+        #     hidden_layer_sizes = [2**(n) for n in reversed(range(3, max_exponent))],
+        #     solver="adam" if model_solver > 0.5 else "sgd",
+        #     batch_size=2**int(model_batch_size),
+        #     learning_rate_init=model_lr_init,
+        #     alpha=model_alpha,
+        #     max_iter=int(model_max_iter),
+        #     early_stopping=True,
+        #     random_state=42,
+        # )
         
-        rna = MLPClassifier(**model_kwargs)
+        # rna = MLPClassifier(**model_kwargs)
 
-        model = VotingClassifier(
-            estimators=[('lr', lr), ('qda', qda), ('svm', svm), ('rna', rna)],
-            voting='soft'
-        )
+        # model = VotingClassifier(
+        #     estimators=[('lr', lr), ('qda', qda), ('svm', svm), ('rna', rna)],
+        #     voting='soft'
+        # )
+        
+        model = xgb.XGBClassifier(objective ='reg:linear',
+                                  colsample_bytree = 0.3,
+                                  learning_rate = 0.1,
+                                  max_depth = 5, 
+                                  alpha = 10, 
+                                  n_estimators = 10)
 
     elif model_selection == 10:
         lr = LogisticRegression(
@@ -564,9 +528,9 @@ model_selection_conf :  1 - Regresion logística
                         4 - QDA
                         5 - MLPClassifier 
                         6 - Ensamble (RL, LDA, QDA)
-                        7 - Ensamble (RL, SVM)
-                        8 - Ensamble (RL, SVM, LDA, QDA)
-                        9 - Ensamble (RL, SVM, QDA, MLP)
+                        7 - Decision Tree
+                        8 - Random Forest
+                        9 - XGBoost
                         10 - Ensamble (RL, LDA, QDA, MLP)
 
 # Croos validation
@@ -601,12 +565,12 @@ Opt. bayesiana, es poible que algunas combinaciones generen error
 data = collections.defaultdict(list)
 
 # Modelo a utilizar 
-model_selection_conf = 1
+model_selection_conf = 9
 cv_conf=10
 
 # Steps pipeline preprocesor
-pca_step_conf=False
-lda_step_conf=True
+pca_step_conf=True
+lda_step_conf=False
 
 # Parametros para la optimizacion
 pbounds = dict(
@@ -626,7 +590,9 @@ pbounds = dict(
     model_lr_init=(0.0001, 1),
     model_alpha=(0.00001, 1),
     model_batch_size=(6, 12), # from 2**6=64 to 2**12=4096
-    model_max_iter=(100, 500)
+    model_max_iter=(100, 500),
+    tree_depth=(2, 10),
+    fr_n_estimators=(100, 500)
 )
 
 optimizer = BayesianOptimization(
@@ -637,7 +603,7 @@ optimizer = BayesianOptimization(
 )
 
 optimizer.maximize(
-    n_iter=30
+    n_iter=100
 )
 
 
@@ -661,6 +627,9 @@ test_best_model(x_data=x_test, y_data=y_test, tipo_data_set=2)
 test_best_model(x_data=df.loc[:, 'genero':'pct_cupo'], 
                 y_data=df.fraude, 
                 tipo_data_set=3)
+
+
+best_model
 
 
 #==========================================
