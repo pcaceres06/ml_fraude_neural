@@ -337,51 +337,7 @@ def train_and_evaluate(scaler_choice,
         fr_n_estimators = int(round(fr_n_estimators, 0))
         model = RandomForestClassifier(n_estimators=fr_n_estimators)
 
-    elif model_selection == 9:
-        # lr = LogisticRegression(
-        #     penalty="l1" if model_penalty > 0.5 else "l2",
-        #     solver='liblinear',
-        #     C=model_C,
-        #     class_weight={0: 1, 1: model_pos_class_weight}
-        # )
-        # lda = LinearDiscriminantAnalysis()
-        # qda = QuadraticDiscriminantAnalysis()
-
-        # if model_penalty < 0.33:
-        #     kernel = 'linear'
-        # elif model_penalty < 0.67:
-        #     kernel = 'rbf'
-        # else:
-        #     kernel = 'sigmoid'
-
-        # svm = SVC(
-        #     probability=True,
-        #     kernel=kernel,
-        #     gamma=model_C,
-        #     C=model_C,
-        #     class_weight={0: 1, 1: model_pos_class_weight}
-        # )
-
-        # max_exponent = int(model_hidden_layer_size_exp)
-        
-        # model_kwargs = dict(
-        #     hidden_layer_sizes = [2**(n) for n in reversed(range(3, max_exponent))],
-        #     solver="adam" if model_solver > 0.5 else "sgd",
-        #     batch_size=2**int(model_batch_size),
-        #     learning_rate_init=model_lr_init,
-        #     alpha=model_alpha,
-        #     max_iter=int(model_max_iter),
-        #     early_stopping=True,
-        #     random_state=42,
-        # )
-        
-        # rna = MLPClassifier(**model_kwargs)
-
-        # model = VotingClassifier(
-        #     estimators=[('lr', lr), ('qda', qda), ('svm', svm), ('rna', rna)],
-        #     voting='soft'
-        # )
-        
+    elif model_selection == 9:        
         model = xgb.XGBClassifier(objective ='reg:linear',
                                   colsample_bytree = 0.3,
                                   learning_rate = 0.1,
@@ -565,7 +521,7 @@ Opt. bayesiana, es poible que algunas combinaciones generen error
 data = collections.defaultdict(list)
 
 # Modelo a utilizar 
-model_selection_conf = 9
+model_selection_conf = 1
 cv_conf=10
 
 # Steps pipeline preprocesor
@@ -658,7 +614,8 @@ predictors_params
 best_model_params
 
 # Serializar modelo
-file_path = f'{os.getcwd()}/modelo'
+# file_path = f'{os.getcwd()}/modelo'
+file_path = f'../../modelo'
 save_model(f'{file_path}/fraud_model.pkl', best_model)
 
 # Almacenar parametros del train set
