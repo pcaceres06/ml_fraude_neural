@@ -303,10 +303,10 @@ for col in num_cols:
     plt.title(f"Variable - {col}")
     i+=1
 
-plt.figure(figsize=(15, 20))
+plt.figure(figsize=(20, 12))
 i = 1
 for col in num_cols:
-    plt.subplot(4, 3, i)
+    plt.subplot(2, 5, i)
     sns.boxplot(data=num_df, x='fraude', y=col)
     plt.title(f"Variable - {col}")
     i+=1
@@ -321,6 +321,7 @@ hour_txn = (
 
 plt.figure(figsize=(15, 10))
 sns.barplot(data=hour_txn, x='hora', y='id_user', hue='fraude')
+plt.title('Cantidad de transacciones por hora', size=15)
 plt.show()
 
 #================================================
@@ -382,8 +383,6 @@ circular_graph(fraude_txn,
                title='Distribución transacciones fraudulentas por dia del mes',
                time_segment='daymonth')
 
-
-fraude_txn.plot(x='hora', y='')
 
 """
 En promedio las transacciones fraudulentas ocurren a las 3 p.m

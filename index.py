@@ -2,7 +2,7 @@
 import os
 import pickle
 from joblib import load
-from app import app
+from app import app, server
 from routes import predict
 from api.credit_card_fraud import data_preparation
 from utils.serialized_model import load_fraud_model
