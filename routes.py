@@ -83,7 +83,7 @@ def predict():
             
             df1 = scaler_data(df, scaler_choice)
             
-            prediction = list(model.predict(df1))
+            prediction = model.predict_proba(df1)[:, 1]
             
             return jsonify({'prediction': str(prediction)})
             
