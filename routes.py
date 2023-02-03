@@ -79,7 +79,6 @@ def predict():
             
             json_data = request.json
             df = data_preparation(json_data)
-            # df = data_preparation(data)
             
             df1 = scaler_data(df, scaler_choice)
             
