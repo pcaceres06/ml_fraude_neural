@@ -63,3 +63,4 @@ tornado==6.2
 traitlets==5.9.0
 wcwidth==0.2.6
 Werkzeug==2.2.2
+xgboost==1.7.3
